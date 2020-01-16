@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<h1>Hola Mundo</h1>
+{{request.user}}
+<p>This is a template</p>
+	<p>Search icon: <span class="fa fa-search"></span></p> <!-- glyphicon glyphicon-search (de bootstrap 3) -->
+	<img src="{% static 'img/Logo0.png' %}" alt="LogoMW" width="52px"/>
+{% endblock %}

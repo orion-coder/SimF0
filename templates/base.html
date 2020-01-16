@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head> 
+	<title>Trying Django</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+	<!-- <link rel="stylesheet" href="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/css/bootstrap_v3.3.7.min.css"> -->
+
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> <!-- font-awesome para substituir "glyphicons" por "fa" --->
+	<!-- Necesario para los dropown buttons, Select multiple -->
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>	
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script> -->
+
+<!-- Libreras para TABLAS: barras progres horizontales en celdas y enlaces para las celdas de cada columna -->
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/js/mtable-progressbarify.js"></script>
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/26df71cccdd955b4a3f7620296e0772d021953ff/js/mtable-linkincolumn.js"></script>
+<!-- {% load staticfiles %}
+<script type="text/javascript" src="{% static 'js/mtable-linkincolumn.js' %}"></script>
+-->
+<!-- Libreria Tablesorter para dotar de ORDENACION y FILTRO (cabecera) tablas html -->
+<link rel="stylesheet" href="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/css/theme.blue_v2.31.1.css">
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/js/jquery.tablesorter_v2.31.1.min.js"></script>
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/js/jquery.tablesorter.widgets_v2.31.1.js"></script>
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/js/widget-build-table_v2.30.2.min.js"></script>
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/js/widget-math_v2.31.1.min.js"></script>
+
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/js/widget-cssStickyHeaders_v2.30.6.min.js"></script>
+<script type="text/javascript" src="https://combinatronics.com/orion-coder/Tablesorter/78d707e616412d3cc8c51eb76664176898bb22ac/js/widget-output_v2.29.0.min.js"></script>
+
+
+<!-- estilos para las tablas estrechas de 'activos', con las librerias bootstrap -->
+<!--
+<style>
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+  background-color: #ccffcc;
+}
+.table-striped>tbody>tr:nth-child(even)>td,
+.table-striped>tbody>tr:nth-child(even)>th {
+  background-color: #eeffee;
+}
+.table-hover tbody tr:hover th,
+.table-hover tbody tr:hover td {
+    background: #aaffaa;
+}
+.table tr {
+   line-height: 9px;
+}
+.TablaScrollableCapFix{ overflow-y: auto; height: 300px;}
+.TablaScrollableCapFix th { position: sticky; top: 0; }
+
+.panel-heading{    
+       padding: 0px; //if not working use !important rule
+}
+</style>
+-->
+</head>
+<body>
+	<!-- <h2>This is a navbar</h2> -->
+	{% include 'navbar.html' %}
+	{% block content %}
+	replace me en base 1.html
+	{% endblock %}
+
+	<!-- {% block another_content_area %}
+	replace me en base 2.html
+	{% endblock %}
+	-->
+</body>
+</html>

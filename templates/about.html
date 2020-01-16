@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>about el sitio web</h1>
+<h3> {{ titulo|capfirst }}</h3> 
+<p>This is a template</p>
+{{ my_html|safe}}
+<p>
+{{ titulo }},{{my_number}},{{my_list}}
+</p>
+<ul>
+	<li>Item1</li>
+	<li>Item2</li>
+</ul>
+<ul>
+	{% for sub_item in my_list %}
+		{% if sub_item == 245 %}
+			<li>{{forloop.counter}} - {{sub_item|add:22}}</li>
+		{% elif sub_item == "abc" %}
+			<li>This item is a text</li>
+		{% else %}
+			<li>{{forloop.counter}} - {{sub_item|add:22}}</li>
+		{% endif %}
+		
+	{% endfor %}
+</ul>
+{% endblock content %}
