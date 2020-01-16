@@ -1,0 +1,214 @@
+<!-- activosHD/templates/activos/activo_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>activo_list.html</h2>
+
+
+<h3>Listado de Carpetas de Activos:  {{ L_FolderNames}}</h3>
+	 
+{# <p>Search icon: <span class="fa fa-search"></span></p> <!-- glyphicon glyphicon-search (de bootstrap 3) --> #}
+
+{% comment %}  
+<!-- Bootstrap Select simple, solo se puede escoger una de las opciones del SELECT -->
+<label>MKTidx:{{ MKTidx }}</label>
+<span id="TestP2" style="background-color:Goldenrod">TP2</span>
+<span id="TestP3" style="background-color:Goldenrod">TP3</span>
+<form id="formDJ" action='.' method='POST'/>{% csrf_token %}
+	<div class="p-2 col-2">
+		<select id="MKTSelect" class="form-control border border-primary rounded"> -- class=form-control data-show-content="true"  bg-primary text-white --
+			{% for item in L_FolderNames %}
+				<option	
+					{% if forloop.counter0 == MKTidx %} {# MKTidx|add:"0" para convertirlo a integer #}
+						selected
+					{% endif %}
+						>{{item}}</option>
+			{% endfor %}
+		</select>
+	</div>
+</form>
+{% endcomment %}
+
+<!-- Bootstrap Select MULTIPLE, se pueden escoger varias opciones a la vez del SELECT -->
+<form id="formDJ" action='.' method='POST'/>{% csrf_token %}
+	<div class="p-2 col-2">
+		<select id="MKTSelect" title="Mercados" class="selectpicker border border-primary rounded" multiple> -- class=form-control data-show-content="true"  bg-primary text-white --
+			{% for item in L_FolderNames %}
+				<option>{{item}}</option>
+			{% endfor %}
+			
+		</select>
+	</div>
+<script>
+	{% for item in MKTidx %}
+		$('#MKTSelect option').eq( {{item}} ).prop('selected', true);
+	{% endfor %}
+</script>
+</form>
+
+
+
+{% comment %}
+<!-- <form method="post" action={% url 'activosHD' %}>{% csrf_token %} -->
+<form id="Frm_dd0" action='.' method='POST' />{% csrf_token %}
+
+	<div class="btn-group">
+		 <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">Select a Market <span class="caret"></span></a>
+		 <ul class="dropdown-menu">
+			{% for item in L_FolderNames %}
+				<li class="dropdown-item"><a href="#">{{item}}</a></li>
+			{% endfor %}
+		 </ul>
+	</div>
+	<span id="TestP0" style="background-color:Goldenrod">TP0</span>
+</form>
+{% endcomment %}
+<h3>Listado de Tickers en el directorio: 
+{% if L_FileNames %}
+    {{ L_FileNames|length }}
+{% else %}
+    0 Tickers.
+{% endif %}</h3>
+
+{# TABLA con los activos de las BBDD de HD seleccionadas #}
+{# overflow:auto, para que la tabla no se salga del div #}
+<div style="margin:0 auto; width:1000px; background-color:#cfefcf;">
+	<div  style="padding:2px;"> <!-- caption -->
+		<button type="button" class="btn btn-primary ToggleF1" title="Toggle Column Filters">Toggle Filter</button>
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary saveFILTERED1" title="Save Filtered Table to .csv File">SaveF</button> <!-- targeted by the "filter_reset" option -->
+			<button type="button" class="btn btn-primary saveALL1" title="Save ALL Table data to .csv File">SaveALL</button> <!-- targeted by the "filter_reset" option -->
+		</div>
+		<span class="NRows1" title="Items tras Filtrado / [N. Items Total]" style="margin:7px 3px">M F/T</span> {# float:right; #}
+	</div> <!-- </caption> -->
+<div class="Lienzo-tabla"  style="margin:0 auto; padding:0px; height: 500px; overflow: auto; position:relative;"> 
+{{ T_Activos|safe }}  {# |safe para interpretar como HTML y no como texto #}
+</div>
+</div>
+
+<script>
+
+//-----------------------------------------------------------------------------------------------------------------
+// Tabla Sencilla Ordenable
+$(function() {
+
+
+/*
+$(".dropdown-menu li a").click(function(){
+  var selText = $(this).text();
+  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+  // console.log('index: ', $dropDownItems.index(this), 'text: ', this.textContent)
+  selected_index = $(this).closest('li').index();
+  selected_text = $(this).closest('li').text();
+  //console.log('index:', selected_index, ' text:',selected_text);
+  $("#TestP0").text('index:'+selected_index+' text:'+selected_text);
+  $('#Frm_dd0').append('<input type="hidden" name="MKTidx" value="'+selected_index+'">');
+  $('#Frm_dd0').append('<input type="hidden" name="MKTname" value="'+selected_text+'">');
+  $("#Frm_dd0").submit();
+});
+*/
+//$(".dropdown-menu li a")[0].click(); //No es necesario ya que entra en bucle
+
+$("#MKTSelect").change(function(){
+	var optionSelected = $(this).find("option:selected");
+	//var selected_index  = optionSelected.index();
+	var selected_text   = optionSelected.text();
+	var results_text = $("#MKTSelect").val().join(',');
+	var results_idx = [];
+	optionSelected.each(function(){ results_idx.push($(this).index()); });
+	$('#formDJ').append('<input type="hidden" name="MKTidx" value="'+results_idx+'">'); // MKTSelect: Paso de la variable indice ['0','1','2'] al modulo python views.py 
+	$('#formDJ').append('<input type="hidden" name="MKTname" value="'+results_text+'">'); // MKTSelect: Paso de la variable texto ['ES35','tmp','USA'] al modulo python views.py 
+	$("#formDJ").submit();
+});
+//$('#MKTSelect').selectpicker();
+
+});
+
+/* Botones de control */
+//*********************
+Filter1IsEnabled = true;
+var filters1 = [];
+
+$('.ToggleF1').click(function() {
+   var $table = $(".Tablesorter-OrdenFiltro"),
+		 wo = $table[0].config.widgetOptions;
+	Filter1IsEnabled = !Filter1IsEnabled;
+	if(Filter1IsEnabled)
+	{	$.tablesorter.setFilters( $table, filters1 ); // , true is optional
+	}else
+	{	filters1 = $.tablesorter.getFilters( $table );
+		$table.trigger('filterReset');
+	}
+});
+$('.saveFILTERED1').click(function() {
+	var $table = $(".Tablesorter-OrdenFiltro"),
+		 wo = $table[0].config.widgetOptions;
+	wo.output_saveRows = 'f';  
+	$table.trigger('outputTable');
+});
+$('.saveALL1').click(function() {
+	var $table = $(".Tablesorter-OrdenFiltro"),
+		 wo = $table[0].config.widgetOptions;
+	wo.output_saveRows = 'a';    
+	$table.trigger('outputTable');
+});
+</script>
+
+
+<script>
+
+$(function() {
+/*-----------------------------------------------------------------------------------------------------------------
+ Tabla Sencilla Ordenable
+*/
+	$('.Tablesorter-OrdenFiltro tr').find('td,th').css('text-align','center'); // centrar las celdas de algunas COLUMNAS de la tabla
+	$.each([3], function( index, value ) {
+		$('.Tablesorter-OrdenFiltro tr').find('td:eq('+value+')').css('text-align','left'); // align-left las celdas de algunas COLUMNAS de la tabla
+		$('.Tablesorter-OrdenFiltro tr').find('th:eq('+(value+1)+')').css('text-align','left'); // align-left las celdas de algunas COLUMNAS de la tabla
+	});
+
+	$('.Tablesorter-OrdenFiltro thead th:eq(4)').attr('data-value','>3500'); // >3500 Los datos historicos mas largos
+  //$(".Tablesorter-OrdenFiltro thead th").addClass("sorter-false"); // Para deshabilitar la cabecera (not sortable)
+	$(".Tablesorter-OrdenFiltro").tablesorter({
+		theme: 'blue',
+		widgets: ['zebra','filter','output','stickyHeaders'],
+		widgetOptions: {
+			stickyHeaders_attachTo: '.Lienzo-tabla',
+			//output_delivery      : 'd',         // (p)opup [default si no indicamos nada], (d)ownload
+		}
+	}).bind('filterEnd', function(event, data) {   /* filterInit  */
+		 // use data.filteredRows or this.config.filteredRows
+		 count = data.filteredRows;
+		 countT = data.totalRows
+		 $('.NRows1').text("Mostrando ["+(count*100/countT).toFixed(1)+"%]: "+count+" / ["+countT+"]");
+//		 $('.row-sin-filtro').find("td").css({'background-color':'#bbffbb'}); /* Marquem la fila de l'INDEX */
+	});
+ 
+	$('.Tablesorter-OrdenFiltro').progressbarify({targetColumn:4,primaryColour:'#99bfe6'});
+/* $('.Tablesorter-OrdenFiltro')
+		.progressbarify({targetColumn:3,primaryColour:'#99bfe6'}).progressbarify({targetColumn:4,primaryColour:'#bfe699'})
+		.progressbarify({targetColumn:9,primaryColour:'#99bfe6',longBAR:'min'}).progressbarify({targetColumn:10,primaryColour:'#bfe699',longBAR:'min'});
+*/
+	$('.Tablesorter-OrdenFiltro').linkincolumn({targetColumn:1,targetLink:'https://es.finance.yahoo.com/chart/',exceptLink:'tablesorter-infoOnly'});
+ 
+ 
+ 
+});
+</script>
+
+
+<style> {# <!-- TABLAS con la libreria TABLESORTER 2.0 // .Tablesorter-OrdenFiltro { --> #}
+.Tablesorter-OrdenFiltro {
+margin: 0px;
+width: 100%;
+//width: inherit;
+//background-color: #cc0000;
+}
+.Tablesorter-OrdenFiltro tr {
+   line-height: 15px;
+}
+</style>
+
+
+{% endblock %}
