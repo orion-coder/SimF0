@@ -1,0 +1,13 @@
+<!-- acciones/templates/acciones/accion_list.html -->
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>accion_list.html</h2>
+{{ object_list }}
+{% for instance in object_list %}
+     <!-- <p>{{ instance.id }} - <a href='{{ instance.get_absolute_url }}'>{{ instance.title }}</a></p> -->
+     <p>{{ instance.id }} - <a href='{{ instance.get_absolute_url }}'>{{ instance.tick }}</a></p>	  
+	  <!--     <p>{{ instance.id }} - {{ instance.tick }}</p> -->
+{% endfor %}
+
+{% endblock %}
